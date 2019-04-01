@@ -1,0 +1,47 @@
+package meme;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
+/**
+ *
+ * @author Stella
+ */
+public class Mode {
+    public static void main(String[] args) {
+
+        JFrame frame = new JFrame();
+        frame.setSize(600,800);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+
+   
+
+        
+        JMenuBar menubar = new JMenuBar();
+        JMenu menu = new JMenu("Menu");
+        JMenuItem size = new JMenuItem("Add Image");
+        menu.add(size);
+        menubar.add(menu);
+        frame.setJMenuBar(menubar);
+        
+    
+
+    }
+
+    void setBounds(int i, int i0, int i1, int i2) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void setVisible(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    JButton[] getButton() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+}
