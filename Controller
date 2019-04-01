@@ -1,0 +1,25 @@
+package meme;
+
+import javax.swing.JButton;
+
+/**
+ *
+ * @author Stella
+ */
+public class Controller {
+
+    JButton[] button;
+
+    public Controller(Mode window) {
+
+        Mode frame = window;
+
+        button = frame.getButton();
+        button[0].addActionListener(this::jButton1ActionPerformed);
+    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        
+        button[0].setEnabled(true);
+    }
+
+}
