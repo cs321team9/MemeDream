@@ -5,16 +5,22 @@
  */
 package memedream;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Daniel
  */
-public class Tag {
+public class Tag implements Serializable{
     private String name;
     private ArrayList<CustomImage> imageList;
     
+    /**
+     *
+     * @param str
+     * @param list
+     */
     public Tag(String str, ArrayList<CustomImage> list)
     {
         setTagName(str);
@@ -26,6 +32,11 @@ public class Tag {
         }
     }
     
+    /**
+     *
+     * @param str
+     * @param img
+     */
     public Tag(String str, CustomImage img)
     {
         setTagName(str);
@@ -34,6 +45,10 @@ public class Tag {
         imageList.add(img);
     }
     
+    /**
+     *
+     * @param img
+     */
     public void addImage(CustomImage img)
     {
         if(!imageList.contains(img))
@@ -42,6 +57,10 @@ public class Tag {
         }
     }
     
+    /**
+     *
+     * @param img
+     */
     public void removeImage(CustomImage img)
     {
         imageList.remove(img);
@@ -56,6 +75,10 @@ public class Tag {
         return imageList;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getTagName()
     {
         return name;
@@ -66,6 +89,11 @@ public class Tag {
         name = str;
     }
     
+    /**
+     *
+     * @param img
+     * @return
+     */
     public boolean containsImage(CustomImage img)
     {
         return imageList.contains(img);

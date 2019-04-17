@@ -11,8 +11,20 @@ package memedream;
  */
 public interface Subject {
     
+    /**
+     *
+     * @param o
+     */
     public void addObserver(Observer o);
+
+    /**
+     *
+     * @param o
+     */
     public void removeObserver(Observer o);
     
+    /**
+     *
+     */
     public void notifyObservers();
 }

@@ -5,13 +5,16 @@
  */
 package memedream;
 
-import java.util.ArrayList;
 
 /**
  *
  * @author Daniel
  */
-public interface Observer {
+public interface Observer{
     
+    /**
+     *
+     * @param msg
+     */
     public void update(Message msg);
 }

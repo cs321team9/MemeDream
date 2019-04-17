@@ -13,20 +13,33 @@ import java.util.ArrayList;
  */
 public class Message {
     
-    private ArrayList<CustomImage>  filteredImages;
-    private ArrayList<Tag> allTags;
+    private final ArrayList<CustomImage>  filteredImages;
+    private final ArrayList<Tag> allTags;
     
+    /**
+     *
+     * @param imageArr
+     * @param tagArr
+     */
     public Message(ArrayList<CustomImage> imageArr, ArrayList<Tag> tagArr)
     {
         filteredImages = imageArr;
         allTags = tagArr;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<CustomImage> getFilteredImages()
     {
         return filteredImages;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Tag> getTags()
     {
         return allTags;

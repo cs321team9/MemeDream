@@ -6,8 +6,14 @@
 package memedream;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -22,43 +28,39 @@ public class MemeDream {
      */
     public static void main(String[] args) {
         
-        Model model = new Model();
+        Model model;
+        
+        
+        //Deserialization or create new model instance
+        try
+        {
+            FileInputStream fileInputStream = new FileInputStream("data.txt");
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            
+            model = (Model) objectInputStream.readObject();            
+        }
+        catch(Exception e)
+        {
+            model = new Model();
+        }
+        
+        
+        //Make sure this comes after the declaration of the model
         Window window = new Window(model);
         
         model.addObserver(window);
+        model.notifyObservers();
         
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
         
-        /* Create and display the form */
-        /*
+        //Show the window
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 window.setVisible(true);
             }
         });
-        */
+
+        
+        
         
         
         
@@ -95,7 +97,7 @@ public class MemeDream {
         
         model.addImage(dog, dogTitle, dogTags, dogRating);
         model.addImage(pug, pugTitle, pugTags, pugRating);
-        model.addImage(dog, eggTitle, eggTags, eggRating);
+        model.addImage(egg, eggTitle, eggTags, eggRating);
         
         //model.filter(filterTags, "g");
         
@@ -105,7 +107,18 @@ public class MemeDream {
         }
         
         
-        
+        //Serialization
+        try 
+        {
+            FileOutputStream fileOutputStream = new FileOutputStream("data.txt");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            
+            objectOutputStream.writeObject(model);
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(MemeDream.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
     }

@@ -22,9 +22,10 @@ public class Model implements Serializable, Subject{
     
     private int id;
     
-    private ArrayList<Observer> observers;
+    private static ArrayList<Observer> observers = new ArrayList<>();
     
     private ArrayList<CustomImage> allImagesList;
+    
     private ArrayList<CustomImage> tempImagesList;
     private ArrayList<Tag> allTagsList;
     
@@ -33,7 +34,7 @@ public class Model implements Serializable, Subject{
     
     private CustomImage selectedImage;
     
-    private Comparator alphaCompare = new Comparator() {
+    private static final transient Comparator alphaCompare = new Comparator() {
         
         @Override
         public int compare(Object o1, Object o2) {
@@ -44,7 +45,7 @@ public class Model implements Serializable, Subject{
         }
         
     };
-    private Comparator ratingCompare = new Comparator() {
+    private static final transient Comparator ratingCompare = new Comparator() {
         
         @Override
         public int compare(Object o1, Object o2) {
@@ -64,7 +65,6 @@ public class Model implements Serializable, Subject{
         id = 0;
         sortingType = "alphabetical";
         
-        observers = new ArrayList<>();
         allImagesList = new ArrayList<>();
         tempImagesList = new ArrayList<>();
         allTagsList = new ArrayList<>();
@@ -113,7 +113,7 @@ public class Model implements Serializable, Subject{
         selectedImage = img;
     }
     
-    public int generateID()
+    private int generateID()
     {
         return id++;
     }
@@ -236,9 +236,6 @@ public class Model implements Serializable, Subject{
         notifyObservers();
     }
     
-    /**
-     *
-     */
     private void removeEmptyTags()
     {
         for(Tag tag : allTagsList)
@@ -248,12 +245,10 @@ public class Model implements Serializable, Subject{
                 allTagsList.remove(tag);
             }
         }
+        notifyObservers();
     }
     
-    /**
-     *
-     */
-    public void sort()
+    private void sort()
     {
         if("alphabetical".equals(sortingType))
         {
