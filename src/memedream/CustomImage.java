@@ -136,11 +136,11 @@ public class CustomImage implements Serializable{
     
     private void setThumbnail(ImageIcon  img)
     {
-        BufferedImage resizedThumbnail = new BufferedImage(700, 700, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage resizedThumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = resizedThumbnail.createGraphics();
         
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g.drawImage(img.getImage(), 0, 0, 700, 700, null);
+        g.drawImage(img.getImage(), 0, 0, 100, 100, null);
         g.dispose();
         
         thumbnail = new ImageIcon(resizedThumbnail);

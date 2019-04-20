@@ -24,7 +24,7 @@ public class Model implements Serializable, Subject{
     
     private static ArrayList<Observer> observers = new ArrayList<>();
     
-    private ArrayList<CustomImage> allImagesList;
+    public ArrayList<CustomImage> allImagesList;
     
     private ArrayList<CustomImage> tempImagesList;
     private ArrayList<Tag> allTagsList;
@@ -108,7 +108,7 @@ public class Model implements Serializable, Subject{
      *
      * @param img
      */
-    public void setSelected(CustomImage img)
+    public void setSelectedImage(CustomImage img)
     {
         selectedImage = img;
     }
@@ -124,25 +124,25 @@ public class Model implements Serializable, Subject{
      */
     public void addTagToSelectedImage(String tagToBeAdded)
     {
-        boolean hasTag = false;
+        boolean tagExists = false;
         
         for(Tag tag : allTagsList)
         {
             if(tag.getTagName().equals(tagToBeAdded))
             {
-                hasTag = true;
+                tagExists = true;
                 break;
             }
         }
         
-        if(!hasTag)
+        if(!tagExists)
         {
             allTagsList.add(new Tag(tagToBeAdded, selectedImage));
         }
         
         selectedImage.addTag(tagToBeAdded);
         
-        notifyObservers();
+        filter();
     }
     
     /**
@@ -163,7 +163,7 @@ public class Model implements Serializable, Subject{
         
         removeEmptyTags();
         
-        notifyObservers();
+        filter();
     }
     
     /**
@@ -210,7 +210,7 @@ public class Model implements Serializable, Subject{
             }
         }
         
-        notifyObservers();
+        filter();
     }
     
     private ArrayList<String> parseTags(String tags)
@@ -232,20 +232,25 @@ public class Model implements Serializable, Subject{
         
         allImagesList.remove(imageToBeRemoved);
         removeEmptyTags();
-        
-        notifyObservers();
+        filter();
     }
     
     private void removeEmptyTags()
     {
+        ArrayList<Tag> toBeRemoved = new ArrayList<>();
         for(Tag tag : allTagsList)
         {
             if(tag.getImages().isEmpty())
             {
-                allTagsList.remove(tag);
+                toBeRemoved.add(tag);
             }
         }
-        notifyObservers();
+        
+        for(Tag tag : toBeRemoved)
+        {
+            allTagsList.remove(tag);
+        }
+        filter();
     }
     
     private void sort()
@@ -260,35 +265,37 @@ public class Model implements Serializable, Subject{
         }
     }
     
-    /**
-     *
-     * @param arr
-     * @param name
-     */
-    public void filter(ArrayList<String> arr, String name)
+    public void update(ArrayList<String> tagsArr, String name)
     {
-        filterTags = arr;
+        filterTags = tagsArr;
         filterName = name;
+        
+        filter();
+    }
+    
+    private void filter()
+    {
         
         tempImagesList.clear();
         for(CustomImage currentImage : allImagesList)
         {
-            if(filterByTag(arr, currentImage) && filterByName(name, currentImage))
+            if(filterByTag(currentImage) && filterByName(currentImage))
             {
                 tempImagesList.add(currentImage);
             }
         }
         
         sort();
+        notifyObservers();
     }
     
-    private boolean filterByTag(ArrayList<String> arr, CustomImage img)
+    private boolean filterByTag(CustomImage img)
     {
-        if(arr == null)
+        if(filterTags == null)
         {
             return true;
         }
-        for(String currentTag : arr)
+        for(String currentTag : filterTags)
         {
             if(!img.getTags().contains(currentTag))
             {
@@ -298,13 +305,13 @@ public class Model implements Serializable, Subject{
         return true;
     }
     
-    private boolean filterByName(String name, CustomImage img)
+    private boolean filterByName(CustomImage img)
     {
-        if(name == null)
+        if(filterName == null)
         {
             return true;
         }
-        if(img.getName().contains(name) && (name != ""  || name != null))
+        if(img.getName().contains(filterName) && (filterName != ""  || filterName != null))
         {
             return true;
         }
@@ -334,7 +341,6 @@ public class Model implements Serializable, Subject{
      */
     @Override
     public void notifyObservers() {
-        filter(filterTags, filterName);
         
         Message msg = new Message(tempImagesList, allTagsList);
                 

@@ -34,19 +34,20 @@ public class MemeDream {
         //Deserialization or create new model instance
         try
         {
+            
             FileInputStream fileInputStream = new FileInputStream("data.txt");
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             
-            model = (Model) objectInputStream.readObject();            
+            model = (Model) objectInputStream.readObject();
+            
         }
         catch(Exception e)
         {
             model = new Model();
         }
         
-        
         //Make sure this comes after the declaration of the model
-        Window window = new Window(model);
+        UserInterface window = new UserInterface(model);
         
         model.addObserver(window);
         model.notifyObservers();
@@ -61,9 +62,10 @@ public class MemeDream {
 
         
         
+        //This is testing code
         
         
-        
+        //Creating necessary fields for creating the images
         ImageIcon dog = null;
         String dogTags = "dog, cool, funny";
         String dogTitle = "Funny Dogs";
@@ -79,6 +81,7 @@ public class MemeDream {
         String eggTitle = "egg";
         int eggRating = 1;
         
+        //Try creating those images
         try 
         {
             dog = new ImageIcon(ImageIO.read(new File("C:/Temp/dog.jpg")));
@@ -90,22 +93,20 @@ public class MemeDream {
             
         }
         
-        ArrayList<String> filterTags = new ArrayList<>();
-        //filterTags.add("dog");
         
-        String filterName;
         
-        model.addImage(dog, dogTitle, dogTags, dogRating);
-        model.addImage(pug, pugTitle, pugTags, pugRating);
-        model.addImage(egg, eggTitle, eggTags, eggRating);
+        
+        //model.addImage(dog, dogTitle, dogTags, dogRating);
+        //model.addImage(pug, pugTitle, pugTags, pugRating);
+        //model.addImage(egg, eggTitle, eggTags, eggRating);
         
         //model.filter(filterTags, "g");
-        
+        /*
         for(CustomImage img : window.imagesToDraw)
         {
             System.out.println(img);
         }
-        
+        */
         
         //Serialization
         try 
