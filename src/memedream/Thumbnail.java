@@ -42,9 +42,8 @@ public class Thumbnail extends javax.swing.JLabel {
     
     public Thumbnail(CustomImage image) {
         thisImage = image;
-        ImageIcon icon = image.getImage();
+        ImageIcon icon = image.getThumbnail();
         this.setIcon(icon);
-        //this.setSize(100, 100);
         this.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
                 iconClicked(e);
@@ -76,8 +75,7 @@ public class Thumbnail extends javax.swing.JLabel {
     
     
     private void iconClicked(MouseEvent e) {
-        
-        System.out.println("icon clicked");
+        ((UserInterface)getTopLevelAncestor()).goToImageView(thisImage);
     }
     private Border border = BorderFactory.createLineBorder(Color.BLACK, 1); 
     

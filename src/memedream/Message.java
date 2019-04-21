@@ -15,16 +15,18 @@ public class Message {
     
     private final ArrayList<CustomImage>  filteredImages;
     private final ArrayList<Tag> allTags;
+    private final CustomImage selectedImage;
     
     /**
      *
      * @param imageArr
      * @param tagArr
      */
-    public Message(ArrayList<CustomImage> imageArr, ArrayList<Tag> tagArr)
+    public Message(ArrayList<CustomImage> imageArr, ArrayList<Tag> tagArr, CustomImage selected)
     {
         filteredImages = imageArr;
         allTags = tagArr;
+        selectedImage = selected;
     }
     
     /**
@@ -43,6 +45,11 @@ public class Message {
     public ArrayList<Tag> getTags()
     {
         return allTags;
+    }
+    
+    public CustomImage getSelectedImage()
+    {
+        return selectedImage;
     }
     
 }

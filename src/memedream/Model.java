@@ -5,11 +5,16 @@
  */
 package memedream;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -68,6 +73,7 @@ public class Model implements Serializable, Subject{
         allImagesList = new ArrayList<>();
         tempImagesList = new ArrayList<>();
         allTagsList = new ArrayList<>();
+        selectedImage = null;
     }
     
     /**
@@ -111,6 +117,7 @@ public class Model implements Serializable, Subject{
     public void setSelectedImage(CustomImage img)
     {
         selectedImage = img;
+        filter();
     }
     
     private int generateID()
@@ -175,6 +182,18 @@ public class Model implements Serializable, Subject{
      */
     public void addImage(ImageIcon img, String name, String tags, int rating)
     {
+        /*
+        ImageIcon image = null;
+        
+        try 
+        {
+            image = new ImageIcon(ImageIO.read(img));
+        } 
+        catch (IOException ex) 
+        {
+            System.out.println("Bad image");
+        }*/
+        
         String tempName = name;
         
         if(tempName == "" || tempName == null)
@@ -184,7 +203,13 @@ public class Model implements Serializable, Subject{
         
         int tempID = generateID();
         
-        ArrayList<String> temporaryTags = parseTags(tags);
+        ArrayList<String> temporaryTags = new ArrayList<>();
+        
+        if(tags != "" && tags != null)
+        {
+            temporaryTags = parseTags(tags);
+        }
+        
         
         CustomImage newImage = new CustomImage(tempID, img, temporaryTags, name, rating);
         allImagesList.add(newImage);
@@ -342,7 +367,7 @@ public class Model implements Serializable, Subject{
     @Override
     public void notifyObservers() {
         
-        Message msg = new Message(tempImagesList, allTagsList);
+        Message msg = new Message(tempImagesList, allTagsList, selectedImage);
                 
         for(Observer o: observers)
         {

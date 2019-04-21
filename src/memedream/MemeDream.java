@@ -109,17 +109,7 @@ public class MemeDream {
         */
         
         //Serialization
-        try 
-        {
-            FileOutputStream fileOutputStream = new FileOutputStream("data.txt");
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            
-            objectOutputStream.writeObject(model);
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(MemeDream.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         
     }
