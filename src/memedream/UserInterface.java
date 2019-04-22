@@ -12,10 +12,7 @@ import java.awt.Container;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import javax.swing.filechooser.FileFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,11 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import memedream.CustomImage;
-import memedream.Message;
-import memedream.Model;
-import memedream.Observer;
-import memedream.Tag;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -40,6 +32,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     
     /**
      * Creates new form UserInterface
+     * @param mod
      */
     public UserInterface(Model mod) {
         
@@ -383,9 +376,9 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         baseViewLayout.setHorizontalGroup(
             baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(baseViewLayout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(32, 32, 32)
                 .addComponent(searchBarLabel)
-                .addContainerGap(928, Short.MAX_VALUE))
+                .addContainerGap(951, Short.MAX_VALUE))
             .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(baseViewLayout.createSequentialGroup()
                     .addContainerGap()
@@ -401,9 +394,9 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         baseViewLayout.setVerticalGroup(
             baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(baseViewLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(22, 22, 22)
                 .addComponent(searchBarLabel)
-                .addContainerGap(733, Short.MAX_VALUE))
+                .addContainerGap(735, Short.MAX_VALUE))
             .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(baseViewLayout.createSequentialGroup()
                     .addContainerGap()
@@ -661,7 +654,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         tagList.clear();
         selectedImage = null;
         model.setSelectedImage(null);
-        model.update(new ArrayList<>(), null);
+        model.updateFilter(new ArrayList<>(), null);
         galleryView.update();
     }//GEN-LAST:event_formWindowOpened
     
@@ -794,12 +787,19 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         }
 }
     
+    /**
+     *
+     */
     protected void goToAlbumView()
     {
         ((CardLayout)getContentPane().getLayout()).first(getContentPane());
         model.setSelectedImage(null);
     }
     
+    /**
+     *
+     * @param img
+     */
     protected void goToImageView(CustomImage img)
     {
         model.setSelectedImage(img);
@@ -828,6 +828,10 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         scrollImageViewTagPanel.setViewportView(imageViewTagsList);
     }
     
+    /**
+     *
+     * @param img
+     */
     protected void setSelectedImageToModel(CustomImage img)
     {
         model.setSelectedImage(img);
@@ -844,6 +848,10 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     }
     // "removes" the labels
     // should be replaced by removeImage
+
+    /**
+     *
+     */
     protected void removeThumb()
     {
         if(thumbCount >= 1){
@@ -854,6 +862,10 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         }
     }
     
+    /**
+     *
+     * @param selectedImage
+     */
     protected void removeThumb(CustomImage selectedImage)
     {
         //galleryView.labels.remove();
@@ -863,10 +875,15 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     {
         
         searchString = str;
-        model.update(tagList, searchString);
+        model.updateFilter(tagList, searchString);
     }
     // "adds" labels
     // is addImage
+
+    /**
+     *
+     * @param image
+     */
     protected void addThumb(CustomImage image) 
     {
         thumbCount++;
@@ -875,6 +892,9 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         //System.out.println("name " + image.getName());
     }
     
+    /**
+     *
+     */
     protected void clearThumbs()
     {
         for(int i = galleryView.labels.size(); i>0; i-- ){
@@ -916,7 +936,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
             tagList.remove(abstractButton.getName());
         }
         
-        model.update(tagList, searchString);
+        model.updateFilter(tagList, searchString);
         galleryView.update();
     }
     
@@ -1012,6 +1032,9 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         updateThumbList();
     }
     
+    /**
+     *
+     */
     protected void openAddImageDialogue()
     {
         addImageDialogue.show();
@@ -1111,11 +1134,31 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     private javax.swing.JTextField titleInputField;
     
     private String searchString;
+
+    /**
+     *
+     */
     protected ArrayList<CustomImage> imagesToDraw;
+
+    /**
+     *
+     */
     protected ArrayList<Tag> allTags;
+
+    /**
+     *
+     */
     protected ArrayList<String> tagList;
+
+    /**
+     *
+     */
     protected Model model;
     int thumbCount = 0;
+
+    /**
+     *
+     */
     protected CustomImage selectedImage;
     private ListIterator imageIterator;
 }

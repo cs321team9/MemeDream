@@ -13,6 +13,11 @@ import memedream.Tag;
  */
 public class TagButton extends javax.swing.JToggleButton {
     private Tag thisTag;
+
+    /**
+     *
+     * @param tag
+     */
     public TagButton(Tag tag){
         this.setText(tag.getTagName());
         thisTag = tag;
@@ -23,6 +28,11 @@ public class TagButton extends javax.swing.JToggleButton {
     {
         return thisTag.getTagName();
     }
+
+    /**
+     *
+     * @return
+     */
     public Tag getTag(){
         return thisTag;
     }

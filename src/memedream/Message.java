@@ -21,6 +21,7 @@ public class Message {
      *
      * @param imageArr
      * @param tagArr
+     * @param selected
      */
     public Message(ArrayList<CustomImage> imageArr, ArrayList<Tag> tagArr, CustomImage selected)
     {
@@ -47,6 +48,10 @@ public class Message {
         return allTags;
     }
     
+    /**
+     *
+     * @return
+     */
     public CustomImage getSelectedImage()
     {
         return selectedImage;

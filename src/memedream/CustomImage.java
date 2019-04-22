@@ -18,7 +18,6 @@ import java.util.ArrayList;
  */
 public class CustomImage implements Serializable{
     
-    private int idNumber;
     private int rating;
     private String name;
     
@@ -28,26 +27,18 @@ public class CustomImage implements Serializable{
     private ArrayList<String> tagsList;
     
     /**
-     *
-     * @param id
-     * @param pic
-     * @param tags
-     * @param title
-     * @param rate
+     * Creates a new CustomImage.
+     * @param pic The ImageIcon used to create the thumbnail and resized image.
+     * @param tags The ArrayList of strings used to filter and search for like CustomImages.
+     * @param title The string used to denote this CustomImage.
+     * @param rate The integer rating value from one to five. Five being good, and one being less so.
      */
-    public CustomImage(int id, ImageIcon pic, ArrayList<String> tags, String title, int rate)
+    public CustomImage(ImageIcon pic, ArrayList<String> tags, String title, int rate)
     {
-        
-        
-        
-        
-        setIDNumber(id);
         setImage(pic);
         setName(title);
         setRating(rate);
         setThumbnail(pic);
-        
-        
         
         tagsList = new ArrayList<>();
         
@@ -59,8 +50,8 @@ public class CustomImage implements Serializable{
     }
     
     /**
-     *
-     * @return
+     * Returns the rating of this CustomImage.
+     * @return rating of this CustomImage.
      */
     public final int getRating() 
     {
@@ -68,8 +59,8 @@ public class CustomImage implements Serializable{
     }
 
     /**
-     *
-     * @return
+     * Returns the name of this CustomImage
+     * @return name of this CustomImage
      */
     public final String getName() 
     {
@@ -77,8 +68,8 @@ public class CustomImage implements Serializable{
     }
 
     /**
-     *
-     * @return
+     * Returns the 500x500 pixel image stored in this CustomImage.
+     * @return the 500x500 image stored in this CustomImage
      */
     public final ImageIcon getImage() 
     {
@@ -86,8 +77,8 @@ public class CustomImage implements Serializable{
     }
     
     /**
-     *
-     * @return
+     * Returns the 100x100 pixel image stored in this CustomImage.
+     * @return the 100x100 image stored in this CustomImage
      */
     public final ImageIcon getThumbnail()
     {
@@ -95,8 +86,8 @@ public class CustomImage implements Serializable{
     }
     
     /**
-     *
-     * @return
+     * Returns the ArrayList of Strings that function as the tags for this CustomImage.
+     * @return list of strings used for sorting and filtering
      */
     public final ArrayList<String> getTags()
     {
@@ -104,8 +95,8 @@ public class CustomImage implements Serializable{
     }
 
     /**
-     *
-     * @param rating
+     * Sets the rating for this CustomImage.
+     * @param rating for this CustomImage.
      */
     public final void setRating(int rating) 
     {
@@ -113,14 +104,15 @@ public class CustomImage implements Serializable{
     }
 
     /**
-     *
-     * @param name
+     * Sets the name for this CustomImage.
+     * @param name for this CustomImage
      */
     public final void setName(String name) 
     {
         this.name = name;
     }
     
+    //Creates the 500x500 ImageIcon stored in image.
     private void setImage(ImageIcon img)
     {
         BufferedImage resizedImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
@@ -134,6 +126,7 @@ public class CustomImage implements Serializable{
         image = new ImageIcon(resizedImage);
     }
     
+    //Creates the 100x100 ImageIcon stored in thumbnail.
     private void setThumbnail(ImageIcon  img)
     {
         BufferedImage resizedThumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
@@ -146,14 +139,9 @@ public class CustomImage implements Serializable{
         thumbnail = new ImageIcon(resizedThumbnail);
     }
     
-    private void setIDNumber(int id)
-    {
-        idNumber = id;
-    }
-    
     /**
-     *
-     * @param str
+     * Adds the given string, if there is not already an identical string, to the ArrayList of strings functioning as tags.
+     * @param str the string to be added to the ArrayList of strings functioning as tags.
      */
     public final void addTag(String str)
     {
@@ -164,8 +152,8 @@ public class CustomImage implements Serializable{
     }
     
     /**
-     *
-     * @param str
+     * Removes the given string from the list of strings functioning as tags. If the given string is not in the list, this does nothing.
+     * @param str the string to be removed from the list.
      */
     public final void removeTag(String str)
     {
@@ -173,27 +161,23 @@ public class CustomImage implements Serializable{
     }
     
     /**
-     *
-     * @param tag
-     * @return
+     * Returns a boolean that is true if the given String tag is contained within the ArrayList of strings.
+     * @param tag the string tested to be within the ArrayList of strings.
+     * @return the boolean whether tag is contained within the ArrayList of Strings.
      */
     public boolean containsTag(String tag)
     {
         return tagsList.contains(tag);
     }
     
+    //This was used for testing purposes. Returns the name, rating, and list of tags.
     @Override
     public String toString()
     {
         String str = "My name is: " + getName() + "\n" +
                     "My Rating is: " + getRating() + "\n" +
                     "My Tags are: " + getTags();
-        /*
-        for(String strong : getTags())
-        {
-            str += strong + " ";
-        }
-*/
+        
         return str;
     }
 }

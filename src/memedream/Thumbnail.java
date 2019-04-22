@@ -11,41 +11,30 @@ package memedream;
  */
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.*;
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import memedream.CustomImage;
-import javax.swing.JPopupMenu;
 
+/**
+ *
+ * @author Daniel
+ */
 public class Thumbnail extends javax.swing.JLabel {
     
     private CustomImage thisImage;
-    
     private javax.swing.JMenuItem deleteImageMenuItem;
     private javax.swing.JPopupMenu iconClickedPopupMenu;
     private javax.swing.JMenuItem viewImageMenuItem;
     
-    public Thumbnail() {
-        this.setText("no image");
-        this.setSize(100, 100);
-        this.addMouseListener(new MouseAdapter(){
-            public void mouseClicked(MouseEvent e){
-                clicked(e);
-            }
-        });
-        this.setPreferredSize(new Dimension(100,100));
-        this.setBorder(border);
-        this.setHorizontalAlignment(CENTER);
-        this.setVerticalAlignment(CENTER);
-    }
     
+    /**
+     *
+     * @param image
+     */
     public Thumbnail(CustomImage image) {
         thisImage = image;
         ImageIcon icon = image.getThumbnail();
@@ -83,6 +72,10 @@ public class Thumbnail extends javax.swing.JLabel {
         iconClickedPopupMenu.add(deleteImageMenuItem);
     }
     
+    /**
+     *
+     * @param str
+     */
     public Thumbnail (String str) {
         this.setText(str);
         this.setSize(100, 100);
@@ -125,6 +118,10 @@ public class Thumbnail extends javax.swing.JLabel {
     
     private Border border = BorderFactory.createLineBorder(Color.BLACK, 1); 
     
+    /**
+     *
+     * @return
+     */
     public CustomImage getImage() {
         return thisImage;
     }

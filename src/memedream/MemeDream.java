@@ -5,21 +5,12 @@
  */
 package memedream;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 /**
- *
- * @author Daniel
+ *  The purpose of this class is solely to create the model and window, and then to link them together. It will deserialize the local data.txt file if it exists, and otherwise creates a new model.
+ * @author Daniel Dyer, Franco Camarillo, Krystal Lin, Wm. Isaac Cunningham.
  */
 public class MemeDream {
 
@@ -28,6 +19,7 @@ public class MemeDream {
      */
     public static void main(String[] args) {
         
+        //Declare the model
         Model model;
         
         
@@ -51,9 +43,10 @@ public class MemeDream {
         
         
         
-        //Make sure this comes after the declaration of the model
+        //Create the View and Controller, while giving a reference to the model.
         UserInterface window = new UserInterface(model);
         
+        //Establish the observer relationship
         model.addObserver(window);
         model.notifyObservers();
         
@@ -65,58 +58,6 @@ public class MemeDream {
             }
         });
 
-        
-        
-        //This is testing code
-        
-        
-        //Creating necessary fields for creating the images
-        ImageIcon dog = null;
-        String dogTags = "dog, cool, funny";
-        String dogTitle = "Funny Dogs";
-        int dogRating = 5;
-        
-        ImageIcon pug = null;
-        String pugTags = "dog, ugly, cute";
-        String pugTitle = "pug";
-        int pugRating = 3;
-        
-        ImageIcon egg = null;
-        String eggTags = "egg, god";
-        String eggTitle = "egg";
-        int eggRating = 1;
-        
-        //Try creating those images
-        try 
-        {
-            dog = new ImageIcon(ImageIO.read(new File("C:/Temp/dog.jpg")));
-            pug = new ImageIcon(ImageIO.read(new File("C:/Temp/pug.jpg")));
-            egg = new ImageIcon(ImageIO.read(new File("C:/Temp/egg.jpg")));
-        } 
-        catch (IOException e) 
-        {
-            
-        }
-        
-        
-        
-        
-        //model.addImage(dog, dogTitle, dogTags, dogRating);
-        //model.addImage(pug, pugTitle, pugTags, pugRating);
-        //model.addImage(egg, eggTitle, eggTags, eggRating);
-        
-        //model.filter(filterTags, "g");
-        /*
-        for(CustomImage img : window.imagesToDraw)
-        {
-            System.out.println(img);
-        }
-        */
-        
-        //Serialization
-        
-        
-        
     }
     
 }

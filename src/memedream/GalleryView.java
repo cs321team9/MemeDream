@@ -80,7 +80,6 @@ public class GalleryView extends javax.swing.JPanel {
 
     /**
      *
-     * @param labels
      */
     public void update() {
         panel.removeAll();
