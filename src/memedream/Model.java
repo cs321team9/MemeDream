@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -39,6 +40,8 @@ public class Model implements Serializable, Subject{
     
     private CustomImage selectedImage;
     
+    private String theme;
+    
     private static final transient Comparator alphaCompare = new Comparator() {
         
         @Override
@@ -57,7 +60,7 @@ public class Model implements Serializable, Subject{
             Integer imageOneRating = ((CustomImage)o1).getRating();
             Integer imageTwoRating = ((CustomImage)o2).getRating();
             
-            return -1*imageOneRating.compareTo(imageTwoRating);
+            return (-1*imageOneRating.compareTo(imageTwoRating));
         }
         
     };
@@ -69,6 +72,7 @@ public class Model implements Serializable, Subject{
     {
         id = 0;
         sortingType = "alphabetical";
+        theme = "light";
         
         allImagesList = new ArrayList<>();
         tempImagesList = new ArrayList<>();
@@ -86,10 +90,18 @@ public class Model implements Serializable, Subject{
     }
     
     /**
+     * 
+     */
+    public String getBackgroundTheme()
+    {
+        return theme;
+    }
+    
+    /**
      *
      * @return
      */
-    public CustomImage getSelected()
+    private CustomImage getSelected()
     {
         return selectedImage;
     }
@@ -100,6 +112,7 @@ public class Model implements Serializable, Subject{
     public void setSortingTypeAlphabetical()
     {
         sortingType = "alphabetical";
+        filter();
     }
     
     /**
@@ -107,7 +120,27 @@ public class Model implements Serializable, Subject{
      */
     public void setSortingTypeRating()
     {
+        
         sortingType = "rating";
+        filter();
+    }
+    
+    /**
+     * 
+     */
+    public void setBackgroundThemeDark()
+    {
+        theme = "dark";
+        filter();
+    }
+    
+    /**
+     * 
+     */
+    public void setBackgroundThemeLight()
+    {
+        theme = "light";
+        filter();
     }
     
     /**
@@ -120,16 +153,28 @@ public class Model implements Serializable, Subject{
         filter();
     }
     
+    public void setSelectedImageRating(int i)
+    {
+        selectedImage.setRating(i);
+        filter();
+    }
+    
     private int generateID()
     {
         return id++;
     }
     
-    /**
-     *
-     * @param tagToBeAdded
-     */
-    public void addTagToSelectedImage(String tagToBeAdded)
+    public void addTagsToSelectedImage(String tagsToBeAdded)
+    {
+        ArrayList<String> arr = parseTags(tagsToBeAdded);
+        for(String str : arr)
+        {
+            addTagToSelectedImage(str);
+        }
+    }
+    
+    
+    private void addTagToSelectedImage(String tagToBeAdded)
     {
         boolean tagExists = false;
         
@@ -250,7 +295,8 @@ public class Model implements Serializable, Subject{
      */
     public void removeImage(CustomImage imageToBeRemoved)
     {
-        for(Tag tag : allTagsList)
+        ArrayList<Tag> tempTagsList = allTagsList;
+        for(Tag tag : tempTagsList)
         {
             tag.removeImage(imageToBeRemoved);
         }
@@ -270,7 +316,6 @@ public class Model implements Serializable, Subject{
                 toBeRemoved.add(tag);
             }
         }
-        
         for(Tag tag : toBeRemoved)
         {
             allTagsList.remove(tag);

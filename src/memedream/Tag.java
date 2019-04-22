@@ -98,4 +98,10 @@ public class Tag implements Serializable{
     {
         return imageList.contains(img);
     }
+    
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }

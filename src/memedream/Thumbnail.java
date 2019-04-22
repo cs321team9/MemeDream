@@ -22,9 +22,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import memedream.CustomImage;
+import javax.swing.JPopupMenu;
 
 public class Thumbnail extends javax.swing.JLabel {
+    
     private CustomImage thisImage;
+    
+    private javax.swing.JMenuItem deleteImageMenuItem;
+    private javax.swing.JPopupMenu iconClickedPopupMenu;
+    private javax.swing.JMenuItem viewImageMenuItem;
     
     public Thumbnail() {
         this.setText("no image");
@@ -53,6 +59,28 @@ public class Thumbnail extends javax.swing.JLabel {
         this.setBorder(border);
         this.setHorizontalAlignment(CENTER);
         this.setVerticalAlignment(CENTER);
+        
+        iconClickedPopupMenu = new javax.swing.JPopupMenu();
+        viewImageMenuItem = new javax.swing.JMenuItem();
+        deleteImageMenuItem = new javax.swing.JMenuItem();
+        
+        viewImageMenuItem.setText("View image");
+        deleteImageMenuItem.setText("Delete image");
+
+        viewImageMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewImageMenuItemActionPerformed(evt);
+            }
+        });
+        
+        deleteImageMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt){
+                deleteImageMenuItemActionPerformed(evt);
+            }
+        });
+        
+        iconClickedPopupMenu.add(viewImageMenuItem);
+        iconClickedPopupMenu.add(deleteImageMenuItem);
     }
     
     public Thumbnail (String str) {
@@ -75,8 +103,26 @@ public class Thumbnail extends javax.swing.JLabel {
     
     
     private void iconClicked(MouseEvent e) {
+        if(e.getButton() == 1)
+        {
+            ((UserInterface)getTopLevelAncestor()).goToImageView(thisImage);
+        }
+        else if(e.getButton() == 3)
+        {
+            iconClickedPopupMenu.show(this, e.getX(), e.getY());
+        }
+    }
+    
+    private void viewImageMenuItemActionPerformed(ActionEvent e)
+    {
         ((UserInterface)getTopLevelAncestor()).goToImageView(thisImage);
     }
+    
+    private void deleteImageMenuItemActionPerformed(ActionEvent e)
+    {
+        ((UserInterface)getTopLevelAncestor()).model.removeImage(thisImage);
+    }
+    
     private Border border = BorderFactory.createLineBorder(Color.BLACK, 1); 
     
     public CustomImage getImage() {

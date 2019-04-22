@@ -40,11 +40,16 @@ public class MemeDream {
             
             model = (Model) objectInputStream.readObject();
             
+            fileInputStream.close();
+            objectInputStream.close();
+            
         }
         catch(Exception e)
         {
             model = new Model();
         }
+        
+        
         
         //Make sure this comes after the declaration of the model
         UserInterface window = new UserInterface(model);

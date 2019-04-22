@@ -6,11 +6,15 @@
 package memedream;
 
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import javax.swing.filechooser.FileFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -20,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import memedream.CustomImage;
 import memedream.Message;
 import memedream.Model;
@@ -37,23 +42,43 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
      * Creates new form UserInterface
      */
     public UserInterface(Model mod) {
+        
+        model = mod;
+        tagList = new ArrayList<>();
+        imagesToDraw = new ArrayList<>();
+        allTags = new ArrayList<>();
+        imageIterator = null;
+        
         initComponents();
         customInitComponents();
         
         
         java.awt.GridLayout tagLayout = new java.awt.GridLayout(0,1,5,5);
         tagPanel.setLayout(tagLayout);
-        model = mod;
-        tagList = new ArrayList<>();
-        imagesToDraw = new ArrayList<>();
-        allTags = new ArrayList<>();
-        imageIterator = null;
     }
 
     private void customInitComponents()
     {
         FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("Only jpg and png supported", "jpg", "png");
         imageChooserWindow.setFileFilter(fileFilter);
+        
+        if(model.getBackgroundTheme() == "light")
+        {
+            menuBarLightThemeButton.doClick();
+        }
+        else
+        {
+            menuBarDarkThemeButton.doClick();
+        }
+        
+        if(model.getSortingType() == "alphabetical")
+        {
+            menuBarAlphabeticalSortButton.doClick();
+        }
+        else
+        {
+            menuBarRatingSortButton.doClick();
+        }
     }
     
     
@@ -80,13 +105,20 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         filePathNameLabel = new javax.swing.JLabel();
         imageChooserWindow = new javax.swing.JFileChooser();
         imageViewTagsPopupMenu = new javax.swing.JPopupMenu();
+        imageViewAddTags = new javax.swing.JMenuItem();
         imageViewMenuItemDeleteTag = new javax.swing.JMenuItem();
+        addTagsDialogue = new javax.swing.JDialog();
+        addTagsInputField = new javax.swing.JTextField();
+        addTagsDialogFinishButtn = new javax.swing.JButton();
+        addTagsInstructionLabel = new javax.swing.JLabel();
+        themeButtonGroup = new javax.swing.ButtonGroup();
+        sortButtonGroup = new javax.swing.ButtonGroup();
         baseView = new javax.swing.JPanel();
         tagScroller = new javax.swing.JScrollPane();
         tagPanel = new javax.swing.JPanel();
         searchBar = new javax.swing.JTextField();
         galleryView = new GalleryView();
-        searchButton = new javax.swing.JButton();
+        searchBarLabel = new javax.swing.JLabel();
         imageView = new javax.swing.JPanel();
         imagePanel = new javax.swing.JPanel();
         scrollImageViewTagPanel = new javax.swing.JScrollPane();
@@ -98,11 +130,11 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         imageViewTitleLabel = new javax.swing.JLabel();
         mainMenuBar = new javax.swing.JMenuBar();
         menuBarEditMenu = new javax.swing.JMenu();
-        jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
-        jRadioButtonMenuItem2 = new javax.swing.JRadioButtonMenuItem();
+        menuBarAlphabeticalSortButton = new javax.swing.JRadioButtonMenuItem();
+        menuBarRatingSortButton = new javax.swing.JRadioButtonMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jRadioButtonMenuItem3 = new javax.swing.JRadioButtonMenuItem();
-        jRadioButtonMenuItem4 = new javax.swing.JRadioButtonMenuItem();
+        menuBarLightThemeButton = new javax.swing.JRadioButtonMenuItem();
+        menuBarDarkThemeButton = new javax.swing.JRadioButtonMenuItem();
 
         addImageDialogue.setBounds(new java.awt.Rectangle(200, 200, 400, 350));
         addImageDialogue.setModal(true);
@@ -233,6 +265,14 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
             }
         });
 
+        imageViewAddTags.setText("Add Tags");
+        imageViewAddTags.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imageViewAddTagsActionPerformed(evt);
+            }
+        });
+        imageViewTagsPopupMenu.add(imageViewAddTags);
+
         imageViewMenuItemDeleteTag.setText("Delete Selected Tag");
         imageViewMenuItemDeleteTag.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -245,6 +285,49 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
             }
         });
         imageViewTagsPopupMenu.add(imageViewMenuItemDeleteTag);
+
+        addTagsDialogue.setTitle("Add Tags Window");
+        addTagsDialogue.setBounds(new java.awt.Rectangle(200, 200, 400, 350));
+        addTagsDialogue.setModal(true);
+
+        addTagsDialogFinishButtn.setText("Add Tags");
+        addTagsDialogFinishButtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTagsDialogFinishButtnActionPerformed(evt);
+            }
+        });
+
+        addTagsInstructionLabel.setText("Add your tags in the field below");
+
+        javax.swing.GroupLayout addTagsDialogueLayout = new javax.swing.GroupLayout(addTagsDialogue.getContentPane());
+        addTagsDialogue.getContentPane().setLayout(addTagsDialogueLayout);
+        addTagsDialogueLayout.setHorizontalGroup(
+            addTagsDialogueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addTagsDialogueLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(addTagsDialogueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addTagsDialogueLayout.createSequentialGroup()
+                        .addComponent(addTagsInputField)
+                        .addContainerGap())
+                    .addGroup(addTagsDialogueLayout.createSequentialGroup()
+                        .addComponent(addTagsInstructionLabel)
+                        .addGap(0, 27, Short.MAX_VALUE))))
+            .addGroup(addTagsDialogueLayout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(addTagsDialogFinishButtn)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        addTagsDialogueLayout.setVerticalGroup(
+            addTagsDialogueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addTagsDialogueLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(addTagsInstructionLabel)
+                .addGap(18, 18, 18)
+                .addComponent(addTagsInputField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(addTagsDialogFinishButtn)
+                .addGap(21, 21, 21))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(990, 729));
@@ -259,6 +342,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         getContentPane().setLayout(new java.awt.CardLayout());
 
         tagScroller.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        tagScroller.setMaximumSize(new java.awt.Dimension(32767, 634));
 
         javax.swing.GroupLayout tagPanelLayout = new javax.swing.GroupLayout(tagPanel);
         tagPanel.setLayout(tagPanelLayout);
@@ -274,51 +358,60 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         tagScroller.setViewportView(tagPanel);
 
         searchBar.setToolTipText("");
+        searchBar.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                searchBarCaretUpdate(evt);
+            }
+        });
+        searchBar.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                searchBarInputMethodTextChanged(evt);
+            }
+        });
         searchBar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchBarActionPerformed(evt);
             }
         });
 
-        searchButton.setText("Search");
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchButtonActionPerformed(evt);
-            }
-        });
+        searchBarLabel.setText("Search by Name:");
 
         javax.swing.GroupLayout baseViewLayout = new javax.swing.GroupLayout(baseView);
         baseView.setLayout(baseViewLayout);
         baseViewLayout.setHorizontalGroup(
             baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1045, Short.MAX_VALUE)
+            .addGroup(baseViewLayout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addComponent(searchBarLabel)
+                .addContainerGap(928, Short.MAX_VALUE))
             .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(baseViewLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(tagScroller, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(12, 12, 12)
                     .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(galleryView, javax.swing.GroupLayout.DEFAULT_SIZE, 889, Short.MAX_VALUE)
+                        .addComponent(galleryView, javax.swing.GroupLayout.DEFAULT_SIZE, 910, Short.MAX_VALUE)
                         .addGroup(baseViewLayout.createSequentialGroup()
                             .addComponent(searchBar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(searchButton)
-                            .addGap(20, 20, 20)))
+                            .addGap(95, 95, 95)))
                     .addContainerGap()))
         );
         baseViewLayout.setVerticalGroup(
             baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 793, Short.MAX_VALUE)
+            .addGroup(baseViewLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(searchBarLabel)
+                .addContainerGap(733, Short.MAX_VALUE))
             .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(baseViewLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(searchButton))
+                    .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(baseViewLayout.createSequentialGroup()
-                            .addComponent(galleryView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(galleryView, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
                             .addGap(78, 78, 78))
                         .addComponent(tagScroller, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addContainerGap()))
@@ -326,8 +419,10 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
 
         getContentPane().add(baseView, "card2");
 
+        imageView.setPreferredSize(new java.awt.Dimension(990, 729));
+
         imagePanel.setPreferredSize(new java.awt.Dimension(400, 400));
-        imagePanel.setLayout(new java.awt.GridLayout());
+        imagePanel.setLayout(new java.awt.GridLayout(1, 0));
 
         scrollImageViewTagPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -366,6 +461,19 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         imageViewRatingSlider.setPaintLabels(true);
         imageViewRatingSlider.setPaintTicks(true);
         imageViewRatingSlider.setSnapToTicks(true);
+        imageViewRatingSlider.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        imageViewRatingSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                imageViewRatingSliderStateChanged(evt);
+            }
+        });
+        imageViewRatingSlider.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                imageViewRatingSliderCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
 
         imageViewTitleLabel.setText("jLabel1");
 
@@ -375,70 +483,114 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
             imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imageViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(previousImageButton, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(previousImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(imageViewLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageViewLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(imageViewRatingSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(imagePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE)
-                            .addComponent(scrollImageViewTagPanel))
-                        .addGap(31, 31, 31))
+                            .addComponent(scrollImageViewTagPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE))
+                        .addGap(159, 159, 159))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageViewLayout.createSequentialGroup()
-                        .addComponent(imageViewTitleLabel)
-                        .addGap(414, 414, 414)))
-                .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(imageViewLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(backButton)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageViewLayout.createSequentialGroup()
-                        .addComponent(nextImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))))
+                        .addGap(18, 26, Short.MAX_VALUE)
+                        .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(imageViewLayout.createSequentialGroup()
+                                .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 793, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(backButton))
+                            .addGroup(imageViewLayout.createSequentialGroup()
+                                .addComponent(imageViewTitleLabel)
+                                .addGap(297, 297, 297)
+                                .addComponent(nextImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(100, 100, 100))))
         );
         imageViewLayout.setVerticalGroup(
             imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imageViewLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(imageViewLayout.createSequentialGroup()
-                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(309, 309, 309)
+                        .addGap(382, 382, 382)
                         .addComponent(previousImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(imageViewLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(nextImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(imageViewLayout.createSequentialGroup()
+                                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(309, 309, 309)
+                                .addComponent(nextImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(imageViewLayout.createSequentialGroup()
                                 .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(imageViewTitleLabel)))
                         .addGap(21, 21, 21)
                         .addComponent(imageViewRatingSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(scrollImageViewTagPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
 
         getContentPane().add(imageView, "card3");
 
         menuBarEditMenu.setText("Edit");
 
-        jRadioButtonMenuItem1.setSelected(true);
-        jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
-        menuBarEditMenu.add(jRadioButtonMenuItem1);
+        sortButtonGroup.add(menuBarAlphabeticalSortButton);
+        menuBarAlphabeticalSortButton.setSelected(true);
+        menuBarAlphabeticalSortButton.setText("Sorting Alphabetically");
+        menuBarAlphabeticalSortButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                menuBarAlphabeticalSortButtonStateChanged(evt);
+            }
+        });
+        menuBarAlphabeticalSortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBarAlphabeticalSortButtonActionPerformed(evt);
+            }
+        });
+        menuBarEditMenu.add(menuBarAlphabeticalSortButton);
 
-        jRadioButtonMenuItem2.setSelected(true);
-        jRadioButtonMenuItem2.setText("jRadioButtonMenuItem2");
-        menuBarEditMenu.add(jRadioButtonMenuItem2);
+        sortButtonGroup.add(menuBarRatingSortButton);
+        menuBarRatingSortButton.setText("Sorting by Rating");
+        menuBarRatingSortButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                menuBarRatingSortButtonStateChanged(evt);
+            }
+        });
+        menuBarRatingSortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBarRatingSortButtonActionPerformed(evt);
+            }
+        });
+        menuBarEditMenu.add(menuBarRatingSortButton);
         menuBarEditMenu.add(jSeparator1);
 
-        jRadioButtonMenuItem3.setSelected(true);
-        jRadioButtonMenuItem3.setText("jRadioButtonMenuItem3");
-        menuBarEditMenu.add(jRadioButtonMenuItem3);
+        themeButtonGroup.add(menuBarLightThemeButton);
+        menuBarLightThemeButton.setSelected(true);
+        menuBarLightThemeButton.setText("Light Theme");
+        menuBarLightThemeButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                menuBarLightThemeButtonStateChanged(evt);
+            }
+        });
+        menuBarLightThemeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBarLightThemeButtonActionPerformed(evt);
+            }
+        });
+        menuBarEditMenu.add(menuBarLightThemeButton);
 
-        jRadioButtonMenuItem4.setSelected(true);
-        jRadioButtonMenuItem4.setText("jRadioButtonMenuItem4");
-        menuBarEditMenu.add(jRadioButtonMenuItem4);
+        themeButtonGroup.add(menuBarDarkThemeButton);
+        menuBarDarkThemeButton.setText("Dark Theme");
+        menuBarDarkThemeButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                menuBarDarkThemeButtonStateChanged(evt);
+            }
+        });
+        menuBarDarkThemeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBarDarkThemeButtonActionPerformed(evt);
+            }
+        });
+        menuBarEditMenu.add(menuBarDarkThemeButton);
 
         mainMenuBar.add(menuBarEditMenu);
 
@@ -446,10 +598,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        search(searchBar.getText());
-    }//GEN-LAST:event_searchButtonActionPerformed
 
     private void openFileChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileChooserButtonActionPerformed
         imageChooserWindow.showOpenDialog(this);
@@ -497,6 +645,9 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             
             objectOutputStream.writeObject(model);
+            
+            fileOutputStream.close();
+            objectOutputStream.close();
         } 
         catch (IOException ex) 
         {
@@ -515,39 +666,8 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_formWindowOpened
     
     private void searchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBarActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_searchBarActionPerformed
-
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        goToAlbumView();
-    }//GEN-LAST:event_backButtonActionPerformed
-
-    private void previousImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousImageButtonActionPerformed
-        model.setSelectedImage((CustomImage)imageIterator.previous());
-        
-        imageViewRatingSlider.setValue(selectedImage.getRating());
-        imageViewTitleLabel.setText(selectedImage.getName());
-        
-        updateImageViewTags();
-    }//GEN-LAST:event_previousImageButtonActionPerformed
-
-    private void nextImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextImageButtonActionPerformed
-        //Two next here in order to actually increment the element
-        imageIterator.next();
-        model.setSelectedImage((CustomImage)imageIterator.next());
-        
-        imageViewRatingSlider.setValue(selectedImage.getRating());
-        imageViewTitleLabel.setText(selectedImage.getName());
-        
-        updateImageViewTags();
-    }//GEN-LAST:event_nextImageButtonActionPerformed
-
-    private void imageViewTagsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageViewTagsListMouseClicked
-        if(evt.getButton() == evt.BUTTON3)
-        {
-            imageViewTagsPopupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
-        }
-    }//GEN-LAST:event_imageViewTagsListMouseClicked
 
     private void imageViewMenuItemDeleteTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageViewMenuItemDeleteTagActionPerformed
         if(tagList.contains(imageViewTagsList.getSelectedValue()))
@@ -564,14 +684,123 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     private void imageViewMenuItemDeleteTagMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageViewMenuItemDeleteTagMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_imageViewMenuItemDeleteTagMouseClicked
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        goToAlbumView();
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    private void previousImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousImageButtonActionPerformed
+        model.setSelectedImage((CustomImage)imageIterator.previous());
+
+        imageViewRatingSlider.setValue(selectedImage.getRating());
+        imageViewTitleLabel.setText(selectedImage.getName());
+
+        updateImageViewTags();
+    }//GEN-LAST:event_previousImageButtonActionPerformed
+
+    private void nextImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextImageButtonActionPerformed
+        //Two next here in order to actually increment the element
+        imageIterator.next();
+        model.setSelectedImage((CustomImage)imageIterator.next());
+
+        imageViewRatingSlider.setValue(selectedImage.getRating());
+        imageViewTitleLabel.setText(selectedImage.getName());
+
+        updateImageViewTags();
+    }//GEN-LAST:event_nextImageButtonActionPerformed
+
+    private void imageViewTagsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageViewTagsListMouseClicked
+        if(evt.getButton() == evt.BUTTON3)
+        {
+            imageViewTagsPopupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_imageViewTagsListMouseClicked
+
+    private void imageViewAddTagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageViewAddTagsActionPerformed
+        addTagsDialogue.show();
+    }//GEN-LAST:event_imageViewAddTagsActionPerformed
+
+    private void addTagsDialogFinishButtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTagsDialogFinishButtnActionPerformed
+        model.addTagsToSelectedImage(addTagsInputField.getText());
+        updateImageViewTags();
+        addTagsDialogue.dispose();
+    }//GEN-LAST:event_addTagsDialogFinishButtnActionPerformed
+
+    private void menuBarRatingSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarRatingSortButtonActionPerformed
+        model.setSortingTypeRating();
+    }//GEN-LAST:event_menuBarRatingSortButtonActionPerformed
+
+    private void menuBarLightThemeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarLightThemeButtonActionPerformed
+        model.setBackgroundThemeLight();
+         setAllPanelColor(this, Color.WHITE);
+    }//GEN-LAST:event_menuBarLightThemeButtonActionPerformed
+
+    private void menuBarAlphabeticalSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarAlphabeticalSortButtonActionPerformed
+        model.setSortingTypeAlphabetical();
+    }//GEN-LAST:event_menuBarAlphabeticalSortButtonActionPerformed
+
+    private void menuBarDarkThemeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarDarkThemeButtonActionPerformed
+        model.setBackgroundThemeDark();
+        setAllPanelColor(this, new Color(128, 128, 128));
+    }//GEN-LAST:event_menuBarDarkThemeButtonActionPerformed
+
+    private void imageViewRatingSliderCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_imageViewRatingSliderCaretPositionChanged
+        
+    }//GEN-LAST:event_imageViewRatingSliderCaretPositionChanged
+
+    private void imageViewRatingSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_imageViewRatingSliderStateChanged
+        model.setSelectedImageRating(imageViewRatingSlider.getValue());
+    }//GEN-LAST:event_imageViewRatingSliderStateChanged
+
+    private void menuBarLightThemeButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_menuBarLightThemeButtonStateChanged
+        
+    }//GEN-LAST:event_menuBarLightThemeButtonStateChanged
+
+    private void menuBarDarkThemeButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_menuBarDarkThemeButtonStateChanged
+        
+    }//GEN-LAST:event_menuBarDarkThemeButtonStateChanged
+
+    private void menuBarAlphabeticalSortButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_menuBarAlphabeticalSortButtonStateChanged
+        
+    }//GEN-LAST:event_menuBarAlphabeticalSortButtonStateChanged
+
+    private void menuBarRatingSortButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_menuBarRatingSortButtonStateChanged
+        
+    }//GEN-LAST:event_menuBarRatingSortButtonStateChanged
+
+    private void searchBarInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_searchBarInputMethodTextChanged
+        
+    }//GEN-LAST:event_searchBarInputMethodTextChanged
+
+    private void searchBarCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_searchBarCaretUpdate
+        search(searchBar.getText());
+    }//GEN-LAST:event_searchBarCaretUpdate
     
-    public void goToAlbumView()
+    private void setAllPanelColor(Container parent, Color clr)
+    {
+        //Source:
+        //https://stackoverflow.com/questions/27774581/change-background-color-of-components-with-reference-to-color-variable-java
+        for(Component c : parent.getComponents())
+        {
+            if(c instanceof Container)
+            {
+                if(c instanceof JPanel)
+                {
+                    c.setBackground(clr);
+                }
+
+                setAllPanelColor((Container)c, clr);
+            }
+        }
+}
+    
+    protected void goToAlbumView()
     {
         ((CardLayout)getContentPane().getLayout()).first(getContentPane());
         model.setSelectedImage(null);
     }
     
-    public void goToImageView(CustomImage img)
+    protected void goToImageView(CustomImage img)
     {
         model.setSelectedImage(img);
         ((CardLayout)getContentPane().getLayout()).next(getContentPane());
@@ -599,7 +828,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         scrollImageViewTagPanel.setViewportView(imageViewTagsList);
     }
     
-    public void setSelectedImageToModel(CustomImage img)
+    protected void setSelectedImageToModel(CustomImage img)
     {
         model.setSelectedImage(img);
     }
@@ -615,7 +844,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     }
     // "removes" the labels
     // should be replaced by removeImage
-    public void removeThumb()
+    protected void removeThumb()
     {
         if(thumbCount >= 1){
             thumbCount--;
@@ -625,7 +854,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         }
     }
     
-    public void removeThumb(CustomImage selectedImage)
+    protected void removeThumb(CustomImage selectedImage)
     {
         //galleryView.labels.remove();
     }
@@ -638,7 +867,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     }
     // "adds" labels
     // is addImage
-    public void addThumb(CustomImage image) 
+    protected void addThumb(CustomImage image) 
     {
         thumbCount++;
         galleryView.labels.add(new Thumbnail(image));
@@ -646,7 +875,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         //System.out.println("name " + image.getName());
     }
     
-    public void clearThumbs()
+    protected void clearThumbs()
     {
         for(int i = galleryView.labels.size(); i>0; i-- ){
             removeThumb();
@@ -658,6 +887,8 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     private void updateTagList() 
     {
         tagPanel.removeAll();
+        
+        
         allTags.forEach((n)->{
             TagButton tagButton = new TagButton(n);
             tagPanel.add(tagButton);
@@ -747,6 +978,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         
         imageIterator = null;
         
+        
         if(selectedImage != null)
         {
             imagePanel.removeAll();
@@ -759,26 +991,28 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         
         if(selectedImage != null)
         {
-            System.out.println(selectedImage);
             imageIterator = imagesToDraw.listIterator(imagesToDraw.indexOf(selectedImage));
         }
         
         
         verifyImageview();
         
-        
-        //Might be redundant
-        if(allTags != msg.getTags())
+        if(!allTags.equals(msg.getTags()))
         {
-            allTags = msg.getTags();
+            System.out.println("wee");
+            allTags = (ArrayList<Tag>)msg.getTags().clone();
             updateTagList();
         }
         
-        allTags = msg.getTags();
+        
+        allTags = (ArrayList<Tag>)msg.getTags().clone();       
+        
+        
+        
         updateThumbList();
     }
     
-    public void openAddImageDialogue()
+    protected void openAddImageDialogue()
     {
         addImageDialogue.show();
     }
@@ -787,6 +1021,10 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog addImageDialogue;
     private javax.swing.JButton addImageFinalizeButton;
+    private javax.swing.JButton addTagsDialogFinishButtn;
+    private javax.swing.JDialog addTagsDialogue;
+    private javax.swing.JTextField addTagsInputField;
+    private javax.swing.JLabel addTagsInstructionLabel;
     private javax.swing.JButton backButton;
     private javax.swing.JPanel baseView;
     private javax.swing.JLabel filePathNameLabel;
@@ -796,18 +1034,19 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel imageNameLabel;
     private javax.swing.JPanel imagePanel;
     private javax.swing.JPanel imageView;
+    private javax.swing.JMenuItem imageViewAddTags;
     private javax.swing.JMenuItem imageViewMenuItemDeleteTag;
     private javax.swing.JSlider imageViewRatingSlider;
     private javax.swing.JList<String> imageViewTagsList;
     private javax.swing.JPopupMenu imageViewTagsPopupMenu;
     private javax.swing.JLabel imageViewTitleLabel;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem3;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JRadioButtonMenuItem menuBarAlphabeticalSortButton;
+    private javax.swing.JRadioButtonMenuItem menuBarDarkThemeButton;
     private javax.swing.JMenu menuBarEditMenu;
+    private javax.swing.JRadioButtonMenuItem menuBarLightThemeButton;
+    private javax.swing.JRadioButtonMenuItem menuBarRatingSortButton;
     private javax.swing.JButton nextImageButton;
     private javax.swing.JButton openFileChooserButton;
     private javax.swing.JButton previousImageButton;
@@ -815,11 +1054,13 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     private javax.swing.JSlider ratingSlideBar;
     private javax.swing.JScrollPane scrollImageViewTagPanel;
     private javax.swing.JTextField searchBar;
-    private javax.swing.JButton searchButton;
+    private javax.swing.JLabel searchBarLabel;
+    private javax.swing.ButtonGroup sortButtonGroup;
     private javax.swing.JPanel tagPanel;
     private javax.swing.JScrollPane tagScroller;
     private javax.swing.JTextField tagsInputField;
     private javax.swing.JLabel tagsLabel;
+    private javax.swing.ButtonGroup themeButtonGroup;
     private javax.swing.JTextField titleInputField;
     // End of variables declaration//GEN-END:variables
     */
@@ -828,6 +1069,10 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     
     private javax.swing.JDialog addImageDialogue;
     private javax.swing.JButton addImageFinalizeButton;
+    private javax.swing.JButton addTagsDialogFinishButtn;
+    private javax.swing.JDialog addTagsDialogue;
+    private javax.swing.JTextField addTagsInputField;
+    private javax.swing.JLabel addTagsInstructionLabel;
     private javax.swing.JButton backButton;
     private javax.swing.JPanel baseView;
     private javax.swing.JLabel filePathNameLabel;
@@ -836,19 +1081,19 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel imageNameLabel;
     private javax.swing.JPanel imagePanel;
     private javax.swing.JPanel imageView;
+    private javax.swing.JMenuItem imageViewAddTags;
     private javax.swing.JMenuItem imageViewMenuItemDeleteTag;
     private javax.swing.JSlider imageViewRatingSlider;
     private javax.swing.JList<String> imageViewTagsList;
     private javax.swing.JPopupMenu imageViewTagsPopupMenu;
     private javax.swing.JLabel imageViewTitleLabel;
-    private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem3;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JRadioButtonMenuItem menuBarAlphabeticalSortButton;
+    private javax.swing.JRadioButtonMenuItem menuBarDarkThemeButton;
     private javax.swing.JMenu menuBarEditMenu;
+    private javax.swing.JRadioButtonMenuItem menuBarLightThemeButton;
+    private javax.swing.JRadioButtonMenuItem menuBarRatingSortButton;
     private javax.swing.JButton nextImageButton;
     private javax.swing.JButton openFileChooserButton;
     private javax.swing.JButton previousImageButton;
@@ -856,19 +1101,21 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     private javax.swing.JSlider ratingSlideBar;
     private javax.swing.JScrollPane scrollImageViewTagPanel;
     private javax.swing.JTextField searchBar;
-    private javax.swing.JButton searchButton;
+    private javax.swing.JLabel searchBarLabel;
+    private javax.swing.ButtonGroup sortButtonGroup;
     private javax.swing.JPanel tagPanel;
     private javax.swing.JScrollPane tagScroller;
     private javax.swing.JTextField tagsInputField;
     private javax.swing.JLabel tagsLabel;
+    private javax.swing.ButtonGroup themeButtonGroup;
     private javax.swing.JTextField titleInputField;
     
     private String searchString;
-    ArrayList<CustomImage> imagesToDraw;
-    ArrayList<Tag> allTags;
-    ArrayList<String> tagList;
-    Model model;
+    protected ArrayList<CustomImage> imagesToDraw;
+    protected ArrayList<Tag> allTags;
+    protected ArrayList<String> tagList;
+    protected Model model;
     int thumbCount = 0;
-    CustomImage selectedImage;
-    ListIterator imageIterator;
+    protected CustomImage selectedImage;
+    private ListIterator imageIterator;
 }
