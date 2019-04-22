@@ -341,7 +341,7 @@ public class Model implements Serializable, Subject{
         filter();
     }
     
-    //Filters allImages by whether they have the currently selected tags and string in their name, then sorts and notifies observers.
+    //Filters allImages by whether they have the currently selected tags and string in their name, then sorts, and notifies observers.
     private void filter()
     {
         
@@ -358,7 +358,7 @@ public class Model implements Serializable, Subject{
         notifyObservers();
     }
     
-    
+    //Returns a boolean whether the image contains all of the currently selected tags.
     private boolean filterByTag(CustomImage img)
     {
         if(filterTags == null)
@@ -375,6 +375,7 @@ public class Model implements Serializable, Subject{
         return true;
     }
     
+    //Returns a boolean whether the image contains the currently selected name.
     private boolean filterByName(CustomImage img)
     {
         if(filterName == null)
@@ -389,8 +390,8 @@ public class Model implements Serializable, Subject{
     }
     
     /**
-     *
-     * @param o
+     * This functions removes the given observer from an ArrayList of observers. Does nothing if the given observer is not in the ArrayList.
+     * @param o The observer object being removed from the ArrayList.
      */
     @Override
     public void removeObserver(Observer o) {
@@ -398,8 +399,8 @@ public class Model implements Serializable, Subject{
     }
 
     /**
-     *
-     * @param o
+     * This function adds the given Observer to an ArrayList of Observers.
+     * @param o The observer being added to the ArrayList.
      */
     @Override
     public void addObserver(Observer o) {
@@ -407,7 +408,7 @@ public class Model implements Serializable, Subject{
     }
 
     /**
-     *
+     * Creates a new Message object and passes in the filtered list of images, the list of all tag, and the currently selected image. 
      */
     @Override
     public void notifyObservers() {
