@@ -13,19 +13,26 @@ import memedream.Tag;
  */
 public class TagButton extends javax.swing.JToggleButton {
     private Tag thisTag;
-    // creates new tagButton using a tag object
+
+    /**
+     * creates a new TagButton using the information from a Tag object
+     * @param tag
+     */
     public TagButton(Tag tag){
         this.setText(tag.getTagName());
         thisTag = tag;
     }
     
-    // gets the name of the tag this button represents
     @Override
     public String getName()
     {
         return thisTag.getTagName();
     }
-    // gets the tag object this button represents
+
+    /**
+     * returns the tag object that this button represents
+     * @return
+     */
     public Tag getTag(){
         return thisTag;
     }
