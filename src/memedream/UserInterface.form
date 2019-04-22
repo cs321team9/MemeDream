@@ -102,10 +102,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Funny Name"/>
           </Properties>
-          <Events>
-            <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="titleInputFieldCaretUpdate"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="titleInputFieldActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="tagsInputField">
           <Properties>
@@ -127,9 +123,6 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="This will show the filepath of your image. Use the browse button to select your file."/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="filepathInputFieldActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="openFileChooserButton">
           <Properties>
@@ -196,7 +189,6 @@
             <Property name="text" type="java.lang.String" value="Delete Selected Tag"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="imageViewMenuItemDeleteTagMouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="imageViewMenuItemDeleteTagActionPerformed"/>
           </Events>
         </MenuItem>
@@ -286,7 +278,6 @@
                 <Property name="text" type="java.lang.String" value="Sorting Alphabetically"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="menuBarAlphabeticalSortButtonStateChanged"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuBarAlphabeticalSortButtonActionPerformed"/>
               </Events>
             </MenuItem>
@@ -298,7 +289,6 @@
                 <Property name="text" type="java.lang.String" value="Sorting by Rating"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="menuBarRatingSortButtonStateChanged"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuBarRatingSortButtonActionPerformed"/>
               </Events>
             </MenuItem>
@@ -313,7 +303,6 @@
                 <Property name="text" type="java.lang.String" value="Light Theme"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="menuBarLightThemeButtonStateChanged"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuBarLightThemeButtonActionPerformed"/>
               </Events>
             </MenuItem>
@@ -325,7 +314,6 @@
                 <Property name="text" type="java.lang.String" value="Dark Theme"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="menuBarDarkThemeButtonStateChanged"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuBarDarkThemeButtonActionPerformed"/>
               </Events>
             </MenuItem>
@@ -455,8 +443,6 @@
           </Properties>
           <Events>
             <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="searchBarCaretUpdate"/>
-            <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="searchBarInputMethodTextChanged"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchBarActionPerformed"/>
           </Events>
         </Component>
         <Component class="org.netbeans.modules.form.InvalidComponent" name="galleryView">
@@ -508,7 +494,7 @@
                               </Group>
                               <Group type="102" attributes="0">
                                   <Component id="imageViewTitleLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="297" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="401" max="-2" attributes="0"/>
                                   <Component id="nextImageButton" min="-2" pref="58" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -622,7 +608,6 @@
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="imageViewRatingSliderStateChanged"/>
-            <EventHandler event="caretPositionChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="imageViewRatingSliderCaretPositionChanged"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="imageViewTitleLabel">
