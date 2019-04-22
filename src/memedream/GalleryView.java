@@ -80,12 +80,13 @@ public class GalleryView extends javax.swing.JPanel {
 
     /**
      *
+     * @param labels
      */
     public void update() {
-        panel.removeAll();
+        panel.removeAll(); //removes all elements from the panel
         labels.forEach((n)->{
             //System.out.println("adding new object");
-            panel.add(n);
+            panel.add(n); //adds the labels in th elist
         });
         
         panel.revalidate();
