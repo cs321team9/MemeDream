@@ -124,6 +124,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         previousImageButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         imageViewRatingSlider = new javax.swing.JSlider();
+        imageViewTitleLabel = new javax.swing.JLabel();
         mainMenuBar = new javax.swing.JMenuBar();
         menuBarEditMenu = new javax.swing.JMenu();
         menuBarAlphabeticalSortButton = new javax.swing.JRadioButtonMenuItem();
@@ -137,16 +138,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         addImageDialogue.setResizable(false);
 
         titleInputField.setText("Funny Name");
-        titleInputField.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                titleInputFieldCaretUpdate(evt);
-            }
-        });
-        titleInputField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                titleInputFieldActionPerformed(evt);
-            }
-        });
 
         tagsInputField.setText("tag1, tag2, tag3, tag4");
 
@@ -159,11 +150,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         ratingSlideBar.setValue(3);
 
         filepathInputField.setToolTipText("This will show the filepath of your image. Use the browse button to select your file.");
-        filepathInputField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filepathInputFieldActionPerformed(evt);
-            }
-        });
 
         openFileChooserButton.setText("Browse");
         openFileChooserButton.addActionListener(new java.awt.event.ActionListener() {
@@ -270,11 +256,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         imageViewTagsPopupMenu.add(imageViewAddTags);
 
         imageViewMenuItemDeleteTag.setText("Delete Selected Tag");
-        imageViewMenuItemDeleteTag.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                imageViewMenuItemDeleteTagMouseClicked(evt);
-            }
-        });
         imageViewMenuItemDeleteTag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 imageViewMenuItemDeleteTagActionPerformed(evt);
@@ -359,18 +340,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
                 searchBarCaretUpdate(evt);
             }
         });
-        searchBar.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                searchBarInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        searchBar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchBarActionPerformed(evt);
-            }
-        });
 
         searchBarLabel.setText("Search by Name:");
 
@@ -379,16 +348,16 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         baseViewLayout.setHorizontalGroup(
             baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(baseViewLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(32, 32, 32)
                 .addComponent(searchBarLabel)
-                .addContainerGap(941, Short.MAX_VALUE))
+                .addContainerGap(916, Short.MAX_VALUE))
             .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(baseViewLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(tagScroller, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(12, 12, 12)
                     .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(galleryView, javax.swing.GroupLayout.DEFAULT_SIZE, 910, Short.MAX_VALUE)
+                        .addComponent(galleryView, javax.swing.GroupLayout.DEFAULT_SIZE, 907, Short.MAX_VALUE)
                         .addGroup(baseViewLayout.createSequentialGroup()
                             .addComponent(searchBar)
                             .addGap(95, 95, 95)))
@@ -397,9 +366,9 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         baseViewLayout.setVerticalGroup(
             baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(baseViewLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(searchBarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(729, Short.MAX_VALUE))
+                .addGap(22, 22, 22)
+                .addComponent(searchBarLabel)
+                .addContainerGap(735, Short.MAX_VALUE))
             .addGroup(baseViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(baseViewLayout.createSequentialGroup()
                     .addContainerGap()
@@ -463,13 +432,8 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
                 imageViewRatingSliderStateChanged(evt);
             }
         });
-        imageViewRatingSlider.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-                imageViewRatingSliderCaretPositionChanged(evt);
-            }
-        });
+
+        imageViewTitleLabel.setText("jLabel1");
 
         javax.swing.GroupLayout imageViewLayout = new javax.swing.GroupLayout(imageView);
         imageView.setLayout(imageViewLayout);
@@ -490,9 +454,12 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
                         .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(imageViewLayout.createSequentialGroup()
                                 .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 793, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(8, 8, 8)
-                                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(nextImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(backButton))
+                            .addGroup(imageViewLayout.createSequentialGroup()
+                                .addComponent(imageViewTitleLabel)
+                                .addGap(401, 401, 401)
+                                .addComponent(nextImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(100, 100, 100))))
         );
         imageViewLayout.setVerticalGroup(
@@ -504,18 +471,20 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
                         .addComponent(previousImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(imageViewLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(nextImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(imageViewLayout.createSequentialGroup()
+                                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(309, 309, 309)
+                                .addComponent(nextImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(imageViewLayout.createSequentialGroup()
                                 .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(imageViewTitleLabel)))
                         .addGap(21, 21, 21)
                         .addComponent(imageViewRatingSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(scrollImageViewTagPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
 
         getContentPane().add(imageView, "card3");
@@ -525,11 +494,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         sortButtonGroup.add(menuBarAlphabeticalSortButton);
         menuBarAlphabeticalSortButton.setSelected(true);
         menuBarAlphabeticalSortButton.setText("Sorting Alphabetically");
-        menuBarAlphabeticalSortButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                menuBarAlphabeticalSortButtonStateChanged(evt);
-            }
-        });
         menuBarAlphabeticalSortButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarAlphabeticalSortButtonActionPerformed(evt);
@@ -539,11 +503,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
 
         sortButtonGroup.add(menuBarRatingSortButton);
         menuBarRatingSortButton.setText("Sorting by Rating");
-        menuBarRatingSortButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                menuBarRatingSortButtonStateChanged(evt);
-            }
-        });
         menuBarRatingSortButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarRatingSortButtonActionPerformed(evt);
@@ -555,11 +514,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         themeButtonGroup.add(menuBarLightThemeButton);
         menuBarLightThemeButton.setSelected(true);
         menuBarLightThemeButton.setText("Light Theme");
-        menuBarLightThemeButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                menuBarLightThemeButtonStateChanged(evt);
-            }
-        });
         menuBarLightThemeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarLightThemeButtonActionPerformed(evt);
@@ -569,11 +523,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
 
         themeButtonGroup.add(menuBarDarkThemeButton);
         menuBarDarkThemeButton.setText("Dark Theme");
-        menuBarDarkThemeButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                menuBarDarkThemeButtonStateChanged(evt);
-            }
-        });
         menuBarDarkThemeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarDarkThemeButtonActionPerformed(evt);
@@ -650,7 +599,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         tagList.clear();
         selectedImage = null;
         model.setSelectedImage(null);
-        model.update(new ArrayList<>(), null);
+        model.updateFilter(new ArrayList<>(), null);
         galleryView.update();
     }//GEN-LAST:event_formWindowOpened
     
@@ -852,7 +801,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     {
         
         searchString = str;
-        model.update(tagList, searchString);
+        model.updateFilter(tagList, searchString);
     }
     // "adds" labels
     // is addImage
@@ -905,7 +854,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
             tagList.remove(abstractButton.getName());
         }
         
-        model.update(tagList, searchString);
+        model.updateFilter(tagList, searchString);
         galleryView.update();
     }
     
@@ -988,7 +937,6 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
         
         if(!allTags.equals(msg.getTags()))
         {
-            System.out.println("wee");
             allTags = (ArrayList<Tag>)msg.getTags().clone();
             updateTagList();
         }
@@ -1028,6 +976,7 @@ public class UserInterface extends javax.swing.JFrame implements Observer {
     private javax.swing.JSlider imageViewRatingSlider;
     private javax.swing.JList<String> imageViewTagsList;
     private javax.swing.JPopupMenu imageViewTagsPopupMenu;
+    private javax.swing.JLabel imageViewTitleLabel;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JRadioButtonMenuItem menuBarAlphabeticalSortButton;
